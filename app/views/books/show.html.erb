@@ -32,7 +32,7 @@
               <% end %>
             <% end %>
           </td>
-          <td>コメント件：<%= @book_id.book_comments.count %></td>
+          <td>コメント数：<%= @book_id.book_comments.count %></td>
         </tr>
       </table>
       <table class='table'>
@@ -51,7 +51,7 @@
       </table>
       <div class="new-comment">
         <%= form_with(model:[@book_id, @book_comment], local: true) do |f| %>
-          <%= f.text_area :comment %><br>
+          <%= f.text_area :comment, class:'form-control' %><br>
           <%= f.submit "送信" %>
         <% end %>
       </div>
