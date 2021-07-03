@@ -2,26 +2,55 @@ class SearchController < ApplicationController
 
   def search
     @model = params["model"]
-    @content = params["content"]
-    @method = params["method"]
-    @datas = search_for(@model, @content, @method)
+    @value = params["value"]
+    @how = params["how"]
+    @datas = search_for(@how, @model, @value)
   end
 
   private
-  def search_for(model, content, method)
+
+  def match(model, value)
     if model == 'user'
-      if method == 'perfect'
-        User.where(name: content)
-      else
-        User.where('name LIKE ?', '%'+content+'%')
-      end
-    elsif model == 'book'
-      if method == 'perfect'
-        Book.where(title: content)
-      else
-        Book.where('title LIKE ?', '%'+content+'%')
-      end
+      User.where(name: value)
+        elsif model == 'book'
+      Book.where(title: value)
     end
   end
 
+  def forward(model, value)
+    if model == 'user'
+      User.where("name LIKE ?", "#{value}%")
+    elsif model == 'book'
+      Book.where("title LIKE ?", "#{value}%")
+    end
+  end
+
+  def backward(model, value)
+    if model == 'user'
+      User.where("name LIKE ?", "%#{value}")
+    elsif model == 'book'
+      Book.where("title LIKE ?", "%#{value}")
+    end
+  end
+
+  def partical(model, value)
+    if model == 'user'
+      User.where("name LIKE ?", "%#{value}%")
+    elsif model == 'book'
+      Book.where("title LIKE ?", "%#{value}%")
+    end
+  end
+
+  def search_for(how, model, value)
+    case how
+    when 'match'
+      match(model, value)
+    when 'forward'
+      forward(model, value)
+    when 'backward'
+      backward(model, value)
+    when 'partical'
+      partical(model, value)
+    end
+  end
 end

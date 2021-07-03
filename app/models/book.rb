@@ -10,5 +10,21 @@ class Book < ApplicationRecord
     favorites.where(user_id: user.id).exists?
   end
 
+  def self.search(content,method)
+	 if search == 'forword'
+         @book = Book.where('title LIKE?', '#{method}%')
+    elsif search == 'backword'
+         @book = Book.where('title LIKE?', '%#{method}')
+    elsif search == 'perfect'
+         @book = Book.where('title: method')
+    elsif search == 'partial'
+         @book = Book.where('title LIKE?','%#{method}%')
+    else
+         @book = Book.all
+    end
+  end
+
+
+
 end
 
